@@ -10,8 +10,8 @@ class Cont extends StatefulWidget {
 class _ContState extends State<Cont> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Center(
+      child: Container(),
     );
   }
 }

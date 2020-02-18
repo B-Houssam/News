@@ -19,7 +19,7 @@ class _OnBoardState extends State<OnBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0XFFFFEFD5),
+        backgroundColor: Color(0XFFF3F3F3),
         body: Stack(
           children: <Widget>[
             Column(
