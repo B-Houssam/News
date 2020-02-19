@@ -21,8 +21,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       //title: 'Flutter Demo',
-      home: OnBoard(),
-      //home: Cont(),
+      //home: OnBoard(),
+      home: Cont(),
     );
   }
 }
