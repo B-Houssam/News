@@ -69,13 +69,13 @@ class _OnBoardState extends State<OnBoard> {
                                   if (result.isNotEmpty &&
                                       result[0].rawAddress.isNotEmpty) {
                                     print('connected');
-                                     Navigator.push(
+                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => Home()));
                                   }
                                 } on SocketException catch (_) {
-                                  Navigator.push(
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => Lost()));
