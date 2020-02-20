@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'views/OnBoard.dart';
-import 'widgets/container.dart';
+import 'views/home_page.dart';
+import 'views/lost.dart';
 
 void main(){
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -20,9 +21,9 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      //title: 'Flutter Demo',
-      //home: OnBoard(),
-      home: Cont(),
+      home: OnBoard(),
+      //home: Lost(),
+      //home: Home(),
     );
   }
 }

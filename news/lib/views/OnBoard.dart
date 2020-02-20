@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:page_indicator/page_indicator.dart';
 
 import '../widgets/button.dart';
+import 'home_page.dart';
+import 'lost.dart';
 import 'pages.dart';
 /*
 import '../Pages/pages.dart';
@@ -58,7 +62,25 @@ class _OnBoardState extends State<OnBoard> {
                             duration: Duration(milliseconds: 100),
                             opacity: _visible2 ? 1.0 : 0.0,
                             child: FlatButton.icon(
-                              onPressed: () {},
+                              onPressed: () async {
+                                try {
+                                  final result = await InternetAddress.lookup(
+                                      'google.com');
+                                  if (result.isNotEmpty &&
+                                      result[0].rawAddress.isNotEmpty) {
+                                    print('connected');
+                                     Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Home()));
+                                  }
+                                } on SocketException catch (_) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Lost()));
+                                }
+                              },
                               icon: Icon(
                                 Icons.arrow_forward,
                                 color: Colors.grey,

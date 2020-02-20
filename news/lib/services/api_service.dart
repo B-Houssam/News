@@ -10,16 +10,12 @@ class ApiService {
     try {
       var response = await http.get(
           'https://api.nytimes.com/svc/topstories/v2/$section.json?api-key=$_apiKey');
-      //print('api.nytimes.com/svc/topstories/v2/$section.json?api-key=$_apiKey');
       Map<String, dynamic> data = json.decode(response.body);
       //var n = data.length;
       List<Article> articles = [];
       data['results'].forEach(
         (articleMap) => articles.add(Article.fromMap(articleMap)),
       );
-
-      //print('->>>>> ${articles.length}');
-
       return articles;
     } catch (err) {
       throw err.toString();

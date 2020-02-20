@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../views/home_page.dart';
+
 class Button extends StatelessWidget {
   const Button({Key key}) : super(key: key);
 
@@ -12,7 +14,10 @@ class Button extends StatelessWidget {
           height: 50,
           child: FloatingActionButton(
             tooltip: 'Next Step',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            },
             elevation: 0,
             backgroundColor: Color(0XFFFFC15E),
             shape: RoundedRectangleBorder(

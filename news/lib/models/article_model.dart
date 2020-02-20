@@ -1,4 +1,7 @@
 
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:flutter/material.dart';
+
 class Article {
 
   final String title;
@@ -7,6 +10,8 @@ class Article {
   final String imageUrl;
   final String publishedDate;
   final String summary;
+  Color col = Colors.black;
+  dynamic shape = EvaIcons.heartOutline;
 
   Article({
     this.title,
