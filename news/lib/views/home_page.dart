@@ -1,12 +1,10 @@
-//import 'dart:io';
-
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
 import '../models/article_model.dart';
 import '../services/api_service.dart';
 import '../widgets/placeholders_lines.dart';
-//import 'lost.dart';
+import 'package:connectivity/connectivity.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -19,6 +17,18 @@ class _HomeState extends State<Home> {
   //Color colIcon = Article().col;
   List<Article> _articles = [];
 
+/*
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  _showSnackBar() {
+    final snacky = SnackBar(
+        content: Text(
+      'Lost connection !',
+      textAlign: TextAlign.center,
+    ));
+    _scaffoldKey.currentState.showSnackBar(snacky);
+  }
+*/
   @override
   void initState() {
     super.initState();
@@ -56,7 +66,11 @@ class _HomeState extends State<Home> {
           height: MediaQuery.of(context).size.height / 2,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            color: Color(0XFFF3F3F3),
+            color: Colors.white,
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(20),
+              bottomLeft: Radius.circular(20),
+            ),
           ),
           child: Column(
             children: <Widget>[
@@ -129,13 +143,11 @@ class _HomeState extends State<Home> {
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height / 7,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [Colors.black,Colors.transparent],
-
-                          )
-                        ),
+                            gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [Colors.black, Colors.transparent],
+                        )),
                       ),
                     ),
                     Padding(
@@ -181,7 +193,7 @@ class _HomeState extends State<Home> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 15, bottom: 5),
+                  padding: const EdgeInsets.only(left: 15, bottom: 13),
                   child: Text(
                     'Published on: ' + '${_articles[index].publishedDate}',
                     style: TextStyle(
@@ -193,6 +205,26 @@ class _HomeState extends State<Home> {
               ),
             ],
           )),
+    );
+  }
+
+  _buildWeather() {
+    return Material(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          //borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: <Widget>[
+            Text(
+              'Bonjour Houssam.',
+              style: TextStyle(),
+            ),
+            Row(),
+          ],
+        ),
+      ),
     );
   }
 
@@ -234,32 +266,88 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0XFFF3F3F3),
-        appBar: AppBar(
-          backgroundColor: Color(0XFFFFC15E),
-        ),
-        body: _articles.length == 0
-            ? Padding(
-                padding: const EdgeInsets.only(top: 30),
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        _buildCardExample(),
-                        _buildCardExample(),
-                      ],
-                    )),
-              )
-            : ListView.builder(
-                padding: EdgeInsets.only(bottom: 10),
-                itemCount: _articles.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: 10),
-                    child: _buildContaier(index),
-                  );
-                },
-              ));
+      backgroundColor: Color(0xFFF2F2F2),
+      body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                  backgroundColor: Color(0xFFF2F2F2),
+                  //expandedHeight: 300.0,
+                  floating: true,
+                  pinned: false,
+                  elevation: 0,
+                  title: Text(
+                    'News',
+                    style: TextStyle(
+                      color: Colors.black,
+                    ),
+                  ),
+                  flexibleSpace: FlexibleSpaceBar()),
+              SliverPersistentHeader(
+                pinned: false,
+                delegate: _SliverAppBarDelegate(Container(
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: _buildWeather(),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFF2F2F2),
+                  ),
+                )),
+              ),
+            ];
+          },
+          body: _articles.length == 0
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          _buildCardExample(),
+                          _buildCardExample(),
+                        ],
+                      )),
+                )
+              : ListView.builder(
+                  padding: EdgeInsets.only(bottom: 10),
+                  itemCount: _articles.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 15),
+                      child: _buildContaier(index),
+                    );
+                  },
+                )),
+    );
+  }
+}
+
+class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
+  final Container _cont;
+
+  _SliverAppBarDelegate(this._cont);
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return new Container(
+      child: _cont,
+    );
+  }
+
+  @override
+  // TODO: implement maxExtent
+  double get maxExtent => 200;
+
+  @override
+  // TODO: implement minExtent
+  double get minExtent => 100;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    // TODO: implement shouldRebuild
+    return false;
   }
 }
