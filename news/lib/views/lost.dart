@@ -43,8 +43,7 @@ class _LostState extends State<Lost> {
                       final result = await InternetAddress.lookup('google.com');
                       if (result.isNotEmpty &&
                           result[0].rawAddress.isNotEmpty) {
-                        print('connected');
-                        Navigator.push(context,
+                        Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) => Home()));
                       }
                     } on SocketException catch (_) {
