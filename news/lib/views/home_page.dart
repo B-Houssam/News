@@ -1,4 +1,4 @@
-import 'dart:io';
+//import 'dart:io';
 
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../models/article_model.dart';
 import '../services/api_service.dart';
 import '../widgets/placeholders_lines.dart';
-import 'lost.dart';
+//import 'lost.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -30,6 +30,7 @@ class _HomeState extends State<Home> {
         await ApiService().fetchArticlesBySection('technology');
     setState(() {
       _articles = articles;
+      //debug
       //print('->>>>${_articles[1].title}');
     });
   }
@@ -121,6 +122,21 @@ class _HomeState extends State<Home> {
                     Container(
                       child: Image.network(_articles[index].imageUrl,
                           fit: BoxFit.fill),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 7,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.topCenter,
+                            colors: [Colors.black,Colors.transparent],
+
+                          )
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -226,17 +242,23 @@ class _HomeState extends State<Home> {
             ? Padding(
                 padding: const EdgeInsets.only(top: 30),
                 child: Align(
-                  alignment: Alignment.center,
-                  child: _buildCardExample(),
-                ),
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        _buildCardExample(),
+                        _buildCardExample(),
+                      ],
+                    )),
               )
             : ListView.builder(
                 padding: EdgeInsets.only(bottom: 10),
                 itemCount: _articles.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: _buildContaier(index));
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: _buildContaier(index),
+                  );
                 },
               ));
   }

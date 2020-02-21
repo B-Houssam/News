@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'views/splash.dart';
+/*
 import 'views/OnBoard.dart';
 import 'views/home_page.dart';
 import 'views/lost.dart';
+*/
 
-void main(){
+void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
-} 
+}
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -21,9 +24,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: OnBoard(),
-      //home: Lost(),
-      //home: Home(),
+      home: Splash(),
     );
   }
 }
