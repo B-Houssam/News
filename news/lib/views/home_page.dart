@@ -212,16 +212,47 @@ class _HomeState extends State<Home> {
     return Material(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color(0XFFF2F2F2),
           //borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             Text(
-              'Bonjour Houssam.',
-              style: TextStyle(),
+              'Morning, houssam',
+              style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'robotoMed',
+                fontWeight: FontWeight.w300,
+                fontSize: 30,
+              ),
             ),
-            Row(),
+            Padding(padding: EdgeInsets.symmetric(vertical: 2)),
+            Text(
+              'Here are you top stories of today.',
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontFamily: 'robotoReg',
+                fontSize: 14,
+              ),
+            ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+            Container(
+              height: 110,
+              decoration: BoxDecoration(
+                color: Color(0XFFF2F2F2),
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey[350],
+                        blurRadius: 9,
+                        offset: Offset(11.0, 12.0)),
+                  ]),
+            )
           ],
         ),
       ),
@@ -266,20 +297,28 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(),
       backgroundColor: Color(0xFFF2F2F2),
       body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                  backgroundColor: Color(0xFFF2F2F2),
+                  backgroundColor: Color(0XFFFFC15E),
                   //expandedHeight: 300.0,
                   floating: true,
+                  actions: <Widget>[
+                    //
+                  ],
                   pinned: false,
                   elevation: 0,
+                  centerTitle: true,
                   title: Text(
                     'News',
                     style: TextStyle(
                       color: Colors.black,
+                      fontFamily: 'playfair',
+                      //fontWeight: FontWeight.w900,
+                      fontSize: 30,
                     ),
                   ),
                   flexibleSpace: FlexibleSpaceBar()),
@@ -291,7 +330,8 @@ class _HomeState extends State<Home> {
                     child: _buildWeather(),
                   ),
                   decoration: BoxDecoration(
-                    color: Color(0xFFF2F2F2),
+                    borderRadius: BorderRadius.circular(20),
+                    color: Color(0XFFF2F2F2),
                   ),
                 )),
               ),
@@ -339,11 +379,11 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   // TODO: implement maxExtent
-  double get maxExtent => 200;
+  double get maxExtent => 230;
 
   @override
   // TODO: implement minExtent
-  double get minExtent => 100;
+  double get minExtent => 230;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
