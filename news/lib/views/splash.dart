@@ -18,7 +18,7 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     const fSec = const Duration(
-      seconds: 4,
+      seconds: 2,
     );
     new Timer(fSec, () => _go());
   }
@@ -29,7 +29,7 @@ class _SplashState extends State<Splash> {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         //print('connected');
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home()));
+            context, MaterialPageRoute(builder: (context) => Home())); //replace with onBoard
       }
     } on SocketException catch (_) {
       Navigator.pushReplacement(

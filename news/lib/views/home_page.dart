@@ -16,6 +16,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   //Color colIcon = Article().col;
   List<Article> _articles = [];
+  int n = 0;
 
 /*
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -36,12 +37,13 @@ class _HomeState extends State<Home> {
   }
 
   _fetchArticles() async {
-    List<Article> articles =
-        await ApiService().fetchArticlesBySection('technology');
+    List<Article> articles = await ApiService().fetchArticlesBySection('home');
     setState(() {
       _articles = articles;
+      //n = _articles.length;
+      print('-------->${_articles[49].title}');
       //debug
-      //print('->>>>${_articles[1].title}');
+      //print('-------->${_articles.isEmpty}');
     });
   }
 
@@ -78,7 +80,6 @@ class _HomeState extends State<Home> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 20),
                   child: Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Container(
                         height: 43,
@@ -241,7 +242,7 @@ class _HomeState extends State<Home> {
             Container(
               height: 110,
               decoration: BoxDecoration(
-                color: Color(0XFFF2F2F2),
+                  color: Color(0XFFF2F2F2),
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(10),
                     topRight: Radius.circular(10),
@@ -353,10 +354,13 @@ class _HomeState extends State<Home> {
               : ListView.builder(
                   padding: EdgeInsets.only(bottom: 10),
                   itemCount: _articles.length,
-                  itemBuilder: (context, index) {
+                  itemBuilder: (context, i) {
                     return Padding(
                       padding: EdgeInsets.only(bottom: 15),
-                      child: _buildContaier(index),
+                      child: ListTile(
+                        trailing: Image.network(_articles[i].imageUrl),
+                        title: Text(_articles[i].title),
+                      )
                     );
                   },
                 )),
@@ -378,16 +382,13 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  // TODO: implement maxExtent
   double get maxExtent => 230;
 
   @override
-  // TODO: implement minExtent
   double get minExtent => 230;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    // TODO: implement shouldRebuild
     return false;
   }
 }
