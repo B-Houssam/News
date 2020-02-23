@@ -9,6 +9,14 @@ import 'views/lost.dart';
 */
 
 void main() {
+  /*
+  ErrorWidget.builder = (FlutterErrorDetails details) => Container(
+        child: Center(
+          child: ProgressIndicator,
+        ),
+      );
+      */
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   runApp(MyApp());
 }

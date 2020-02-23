@@ -26,6 +26,8 @@ dependencies:
   cupertino_icons: ^0.1.2
   http: ^0.12.0+1
   connectivity: ^0.4.8+1
+  weather: ^0.9.5
+  location: ^2.3.3
 
 dev_dependencies:
   flutter_test:
@@ -80,5 +82,8 @@ flutter:
     - family: robotoMed
       fonts:
         - asset: fonts/Roboto-Medium.ttf
+    - family: quickSandLight
+      fonts:
+        - asset: fonts/Quicksand-Light.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

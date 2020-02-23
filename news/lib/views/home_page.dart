@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../models/article_model.dart';
 import '../services/api_service.dart';
 import '../widgets/placeholders_lines.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:weather/weather.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -17,6 +17,8 @@ class _HomeState extends State<Home> {
   //Color colIcon = Article().col;
   List<Article> _articles = [];
   int n = 0;
+  Weather _weth;
+  bool isLoding = true;
 
 /*
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -34,6 +36,23 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     _fetchArticles();
+    _fetchWether();
+  }
+
+  _fetchWether() async {
+    try {
+      WeatherStation _weatherSt =
+          new WeatherStation('97c67c4d203208e953239bf12da03413');
+      Weather weather = await _weatherSt.currentWeather();
+      //debug
+      //print('---->>>>>${weather.temperature.celsius}');
+      setState(() {
+        _weth = weather;
+        isLoding = false;
+      });
+    } catch (e) {
+      throw e.toString();
+    }
   }
 
   _fetchArticles() async {
@@ -41,7 +60,7 @@ class _HomeState extends State<Home> {
     setState(() {
       _articles = articles;
       //n = _articles.length;
-      print('-------->${_articles[49].title}');
+      //print('-------->${_articles[49].title}');
       //debug
       //print('-------->${_articles.isEmpty}');
     });
@@ -213,46 +232,63 @@ class _HomeState extends State<Home> {
     return Material(
       child: Container(
         decoration: BoxDecoration(
-          color: Color(0XFFF2F2F2),
-          //borderRadius: BorderRadius.circular(10),
+          color: Colors.blueGrey[50],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text(
-              'Morning, houssam',
-              style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'robotoMed',
-                fontWeight: FontWeight.w300,
-                fontSize: 30,
-              ),
-            ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 2)),
-            Text(
-              'Here are you top stories of today.',
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontFamily: 'robotoReg',
-                fontSize: 14,
-              ),
-            ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-            Container(
-              height: 110,
-              decoration: BoxDecoration(
-                  color: Color(0XFFF2F2F2),
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(10),
-                    topRight: Radius.circular(10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Morning, Houssam',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'QuickSandLight',
+                    fontSize: 28,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey[350],
-                        blurRadius: 9,
-                        offset: Offset(11.0, 12.0)),
-                  ]),
+                ),
+                Padding(padding: EdgeInsets.only(bottom: 4)),
+                Text(
+                  'Here are you top stories of today.',
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontFamily: 'QuickSandLight',
+                    fontSize: 15,
+                  ),
+                ),
+                //Padding(padding: EdgeInsets.only(bottom: 10)),
+              ],
+            ),
+            Expanded(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Image.network(
+                    'http://openweathermap.org/img/wn/${_weth.weatherIcon}.png'),
+              ],
+            )),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  '${_weth.temperature.celsius}°',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'QuickSandLight',
+                  ),
+                ),
+                Text(
+                  '${_weth.weatherMain}',
+                  style: TextStyle(
+                    fontFamily: 'QuickSandLight',
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             )
           ],
         ),
@@ -297,21 +333,29 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoding == true ? Scaffold(
+      backgroundColor: Colors.blueGrey[50],
+      body: Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation(Color(0XFFFFC15E)),
+          //backgroundColor: Color(0XFFFFC15E),
+        ),
+      ),
+    ) 
+     : Scaffold(
       drawer: Drawer(),
-      backgroundColor: Color(0xFFF2F2F2),
+      backgroundColor: Colors.blueGrey[50],
       body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
                   backgroundColor: Color(0XFFFFC15E),
-                  //expandedHeight: 300.0,
                   floating: true,
                   actions: <Widget>[
                     //
                   ],
-                  pinned: false,
-                  elevation: 0,
+                  pinned: true,
+                  elevation: 10,
                   centerTitle: true,
                   title: Text(
                     'News',
@@ -327,12 +371,14 @@ class _HomeState extends State<Home> {
                 pinned: false,
                 delegate: _SliverAppBarDelegate(Container(
                   child: Padding(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(10),
                     child: _buildWeather(),
                   ),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0XFFF2F2F2),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20)),
+                    color: Colors.blueGrey[50],
                   ),
                 )),
               ),
@@ -343,25 +389,20 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.only(top: 30),
                   child: Align(
                       alignment: Alignment.center,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          _buildCardExample(),
-                          _buildCardExample(),
-                        ],
-                      )),
-                )
+                      child: Center(
+                        child: _buildCardExample(),
+                      )
+                ))
               : ListView.builder(
                   padding: EdgeInsets.only(bottom: 10),
                   itemCount: _articles.length,
                   itemBuilder: (context, i) {
                     return Padding(
-                      padding: EdgeInsets.only(bottom: 15),
-                      child: ListTile(
-                        trailing: Image.network(_articles[i].imageUrl),
-                        title: Text(_articles[i].title),
-                      )
-                    );
+                        padding: EdgeInsets.only(bottom: 15),
+                        child: ListTile(
+                          trailing: Image.network(_articles[i].imageUrl),
+                          title: Text(_articles[i].title),
+                        ));
                   },
                 )),
     );
@@ -382,10 +423,10 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 
   @override
-  double get maxExtent => 230;
+  double get maxExtent => 150;
 
   @override
-  double get minExtent => 230;
+  double get minExtent => 150;
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
