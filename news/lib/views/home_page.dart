@@ -78,6 +78,7 @@ class _HomeState extends State<Home> {
     });
   }
 
+/*
   _buildContaier(var index) {
     return GestureDetector(
       onDoubleTap: () {
@@ -227,12 +228,12 @@ class _HomeState extends State<Home> {
           )),
     );
   }
-
+*/
   _buildWeather() {
     return Material(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.blueGrey[50],
+          color: Color(0XFFFFD89B),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -333,79 +334,109 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoding == true ? Scaffold(
-      backgroundColor: Colors.blueGrey[50],
-      body: Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation(Color(0XFFFFC15E)),
-          //backgroundColor: Color(0XFFFFC15E),
-        ),
-      ),
-    ) 
-     : Scaffold(
-      drawer: Drawer(),
-      backgroundColor: Colors.blueGrey[50],
-      body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                  backgroundColor: Color(0XFFFFC15E),
-                  floating: true,
-                  actions: <Widget>[
-                    //
-                  ],
-                  pinned: true,
-                  elevation: 10,
-                  centerTitle: true,
-                  title: Text(
-                    'News',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'playfair',
-                      //fontWeight: FontWeight.w900,
-                      fontSize: 30,
-                    ),
-                  ),
-                  flexibleSpace: FlexibleSpaceBar()),
-              SliverPersistentHeader(
-                pinned: false,
-                delegate: _SliverAppBarDelegate(Container(
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: _buildWeather(),
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20)),
-                    color: Colors.blueGrey[50],
-                  ),
-                )),
+    return isLoding == true
+        ? Scaffold(
+            backgroundColor: Colors.blueGrey[50],
+            body: Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Color(0XFFFFC15E)),
+                //backgroundColor: Color(0XFFFFC15E),
               ),
-            ];
-          },
-          body: _articles.length == 0
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Center(
-                        child: _buildCardExample(),
-                      )
-                ))
-              : ListView.builder(
-                  padding: EdgeInsets.only(bottom: 10),
-                  itemCount: _articles.length,
-                  itemBuilder: (context, i) {
-                    return Padding(
-                        padding: EdgeInsets.only(bottom: 15),
-                        child: ListTile(
-                          trailing: Image.network(_articles[i].imageUrl),
-                          title: Text(_articles[i].title),
-                        ));
-                  },
-                )),
-    );
+            ),
+          )
+        : Scaffold(
+            drawer: Drawer(),
+            backgroundColor: Colors.blueGrey[50],
+            body: NestedScrollView(
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                        backgroundColor: Color(0XFFFFC15E),
+                        floating: true,
+                        actions: <Widget>[
+                          //
+                        ],
+                        pinned: true,
+                        elevation: 10,
+                        centerTitle: true,
+                        title: Text(
+                          'News',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'playfair',
+                            fontSize: 30,
+                          ),
+                        ),
+                        flexibleSpace: FlexibleSpaceBar()),
+                    SliverPersistentHeader(
+                      pinned: false,
+                      delegate: _SliverAppBarDelegate(Container(
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: _buildWeather(),
+                        ),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20)),
+                          color: Color(0XFFFFD89B),
+                        ),
+                      )),
+                    ),
+                  ];
+                },
+                body: _articles.length == 0
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Center(
+                              child: _buildCardExample(),
+                            )))
+                    : ListView.separated(
+                        separatorBuilder: (conext, index) => Divider(
+                          color: Colors.grey[300],
+                        ),
+                        padding: EdgeInsets.only(bottom: 3, top: 10),
+                        itemCount: _articles.length,
+                        itemBuilder: (context, i) {
+                          return Padding(
+                              padding: EdgeInsets.only(bottom: 15),
+                              child: ListTile(
+                                isThreeLine: true,
+                                leading: Container(
+                                  height: 45,
+                                  width: 45,
+                                  child: Image.asset(
+                                    'assets/man.png',
+                                    fit: BoxFit.fill,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey,
+                                    borderRadius: BorderRadius.circular(50),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 8,
+                                          spreadRadius: 0.4,
+                                          offset: Offset(6.0, 6.0)),
+                                    ],
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  _articles[i].publishedDate,
+                                  style: TextStyle(
+                                    fontFamily: 'quickSandLight',
+                                    fontSize: 13,
+                                  ),
+                                ),
+                                trailing: Image.network(_articles[i].imageUrl),
+                                title: Text(_articles[i].title),
+                              ));
+                        },
+                      )),
+          );
   }
 }
 

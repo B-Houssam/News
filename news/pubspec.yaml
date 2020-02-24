@@ -51,6 +51,7 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
    - assets/1.png
+   - assets/man.png
    - assets/2.png
    - assets/logo.png
    - assets/lost.png
