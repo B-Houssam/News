@@ -17,7 +17,7 @@ class First extends StatelessWidget {
                 child: Text(
                   "Welcome",
                   style: TextStyle(
-                    color: Color(0XFFf9a826),
+                    color: Color(0XFF48466D),
                     fontFamily: "playfairBlack",
                     fontSize: 35,
                   ),
@@ -117,7 +117,7 @@ class Seconde extends StatelessWidget {
                           "NewYork Times.",
                           style: TextStyle(
                             fontFamily: "playfairBlack",
-                            color: Color(0XFFf9a826),
+                            color: Color(0XFF48466D),
                             fontSize: 30,
                           ),
                           overflow: TextOverflow.ellipsis,

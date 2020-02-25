@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import 'OnBoard.dart';
 import 'lost.dart';
 
 class Splash extends StatefulWidget {
@@ -29,7 +29,9 @@ class _SplashState extends State<Splash> {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         //print('connected');
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home())); //replace with onBoard
+            context,
+            MaterialPageRoute(
+                builder: (context) => OnBoard())); //replace with onBoard
       }
     } on SocketException catch (_) {
       Navigator.pushReplacement(
@@ -40,7 +42,7 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0XFFFFC15E),
+      backgroundColor: Color(0XFF48466D),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width * .5,

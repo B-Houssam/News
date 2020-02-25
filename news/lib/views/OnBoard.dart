@@ -42,7 +42,7 @@ class _OnBoardState extends State<OnBoard> {
                         width: 70,
                         child: Image.asset("assets/logo.png"),
                         decoration: BoxDecoration(
-                          color: Color(0XFFFFC15E),
+                          color: Color(0XFF48466D),
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
@@ -69,10 +69,10 @@ class _OnBoardState extends State<OnBoard> {
                                   if (result.isNotEmpty &&
                                       result[0].rawAddress.isNotEmpty) {
                                     print('connected');
-                                     Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Home()));
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Home()));
                                   }
                                 } on SocketException catch (_) {
                                   Navigator.pushReplacement(
@@ -104,7 +104,7 @@ class _OnBoardState extends State<OnBoard> {
                   padding: EdgeInsets.only(bottom: 25),
                   child: PageIndicatorContainer(
                       indicatorColor: Colors.grey[300],
-                      indicatorSelectorColor: Color(0XFFf9a826),
+                      indicatorSelectorColor: Color(0XFF48466D),
                       shape: IndicatorShape.roundRectangleShape(
                           size: Size.square(8), cornerSize: Size.square(2)),
                       length: 2,

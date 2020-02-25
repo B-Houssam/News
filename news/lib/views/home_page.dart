@@ -1,10 +1,13 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:page_indicator/page_indicator.dart';
 
 import '../models/article_model.dart';
+import '../models/trend.dart';
 import '../services/api_service.dart';
-import '../widgets/placeholders_lines.dart';
 import 'package:weather/weather.dart';
+
+import '../services/api_trend.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
@@ -13,30 +16,27 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
   //Color colIcon = Article().col;
   List<Article> _articles = [];
-  int n = 0;
+  List<Article> _articlesH = [];
+  List<Article> _articlesS = [];
+  List<ArticleT> _articlesT = [];
+  List<Article> _articlesA = [];
+  List<Article> _articlesB = [];
+
   Weather _weth;
   bool isLoding = true;
+  Color _color = Color(0xFF86819C);
+  TabController _tabController;
 
-/*
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
-  _showSnackBar() {
-    final snacky = SnackBar(
-        content: Text(
-      'Lost connection !',
-      textAlign: TextAlign.center,
-    ));
-    _scaffoldKey.currentState.showSnackBar(snacky);
-  }
-*/
   @override
   void initState() {
-    super.initState();
+    _tabController = new TabController(length: 5, vsync: this);
     _fetchArticles();
+    _fetchTrends();
     _fetchWether();
+    super.initState();
   }
 
   _fetchWether() async {
@@ -55,26 +55,34 @@ class _HomeState extends State<Home> {
     }
   }
 
+  _fetchTrends() async {
+    List<ArticleT> articlesT = await ApiServiceT().fetchTrends();
+    setState(() {
+      _articlesT = articlesT;
+      //print('----------------->>');
+    });
+  }
+
   _fetchArticles() async {
     List<Article> articles = await ApiService().fetchArticlesBySection('home');
+    List<Article> articlesH =
+        await ApiService().fetchArticlesBySection('health');
+    List<Article> articlesS =
+        await ApiService().fetchArticlesBySection('science');
+    List<Article> articlesA = await ApiService().fetchArticlesBySection('arts');
+    List<Article> articlesB =
+        await ApiService().fetchArticlesBySection('books');
     setState(() {
       _articles = articles;
+      _articlesH = articlesH;
+      _articlesS = articlesS;
+      _articlesA = articlesA;
+      _articlesB = articlesB;
+
       //n = _articles.length;
       //print('-------->${_articles[49].title}');
       //debug
       //print('-------->${_articles.isEmpty}');
-    });
-  }
-
-  setCol(index) {
-    setState(() {
-      if (_articles[index].col == Colors.black) {
-        _articles[index].col = Colors.red;
-        _articles[index].shape = EvaIcons.heart;
-      } else {
-        _articles[index].col = Colors.black;
-        _articles[index].shape = EvaIcons.heartOutline;
-      }
     });
   }
 
@@ -233,7 +241,7 @@ class _HomeState extends State<Home> {
     return Material(
       child: Container(
         decoration: BoxDecoration(
-          color: Color(0XFFFFD89B),
+          color: _color,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -245,16 +253,16 @@ class _HomeState extends State<Home> {
                 Text(
                   'Morning, Houssam',
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Colors.white,
                     fontFamily: 'QuickSandLight',
                     fontSize: 28,
                   ),
                 ),
                 Padding(padding: EdgeInsets.only(bottom: 4)),
                 Text(
-                  'Here are you top stories of today.',
+                  'Here are the stories of today.',
                   style: TextStyle(
-                    color: Colors.grey[700],
+                    color: Colors.grey[100],
                     fontFamily: 'QuickSandLight',
                     fontSize: 15,
                   ),
@@ -280,13 +288,14 @@ class _HomeState extends State<Home> {
                   style: TextStyle(
                     fontSize: 30,
                     fontFamily: 'QuickSandLight',
+                    color: Colors.white,
                   ),
                 ),
                 Text(
                   '${_weth.weatherMain}',
                   style: TextStyle(
                     fontFamily: 'QuickSandLight',
-                    color: Colors.grey,
+                    color: Colors.grey[100],
                   ),
                 ),
               ],
@@ -296,7 +305,7 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-
+/*
   _buildCardExample() {
     return Material(
       borderRadius: BorderRadius.circular(10),
@@ -331,16 +340,121 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+  */
+
+  _launchUrl(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _buildCard() {
+    return Padding(
+        padding: EdgeInsets.only(bottom: 20, left: 20, right: 20, top: 10),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            color: Colors.transparent,
+          ),
+          child: Stack(children: <Widget>[
+            PageIndicatorContainer(
+              length: 5,
+              indicatorSelectorColor: Color(0XFF3D84A8),
+              indicatorColor: Colors.grey[300],
+              shape: IndicatorShape.roundRectangleShape(
+                  size: Size.square(8), cornerSize: Size.square(2)),
+              align: IndicatorAlign.bottom,
+              child: PageView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      GestureDetector(
+                        onTap: () {
+                          _launchUrl(_articlesT[index].url);
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            '${_articlesT[index].imageUrl}',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                      Opacity(
+                        opacity: 0.6,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            //height: MediaQuery.of(context).size.height / 20,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    bottomLeft: Radius.circular(20)),
+                                gradient: LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [Colors.black, Colors.transparent],
+                                )),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 30,
+                        left: 20,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 3.5,
+                          child: Text(
+                            '${_articlesT[index].title}',
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.fade,
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'robotoReg',
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            Positioned(
+              left: 20,
+              top: 10,
+              child: Text(
+                "Today's trends",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                  fontFamily: 'robotoMed',
+                ),
+              ),
+            ),
+          ]),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return isLoding == true
+    return isLoding == true ||
+            _articles.length == 0 ||
+            _articlesT.length == 0 ||
+            _articlesH.length == 0 ||
+            _articlesS.length == 0 ||
+            _articlesB.length == 0 ||
+            _articlesA.length == 0
         ? Scaffold(
             backgroundColor: Colors.blueGrey[50],
             body: Center(
               child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Color(0XFFFFC15E)),
-                //backgroundColor: Color(0XFFFFC15E),
+                valueColor: AlwaysStoppedAnimation(Color(0XFF48466D)),
               ),
             ),
           )
@@ -352,18 +466,18 @@ class _HomeState extends State<Home> {
                     (BuildContext context, bool innerBoxIsScrolled) {
                   return <Widget>[
                     SliverAppBar(
-                        backgroundColor: Color(0XFFFFC15E),
+                        backgroundColor: Color(0XFF48466D),
                         floating: true,
                         actions: <Widget>[
                           //
                         ],
-                        pinned: true,
+                        pinned: false,
                         elevation: 10,
                         centerTitle: true,
                         title: Text(
                           'News',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontFamily: 'playfair',
                             fontSize: 30,
                           ),
@@ -371,71 +485,343 @@ class _HomeState extends State<Home> {
                         flexibleSpace: FlexibleSpaceBar()),
                     SliverPersistentHeader(
                       pinned: false,
+                      floating: false,
                       delegate: _SliverAppBarDelegate(Container(
                         child: Padding(
-                          padding: EdgeInsets.all(10),
+                          padding: EdgeInsets.only(left: 10, right: 10),
                           child: _buildWeather(),
                         ),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(20),
-                              bottomRight: Radius.circular(20)),
-                          color: Color(0XFFFFD89B),
+                          color: _color,
                         ),
                       )),
                     ),
                   ];
                 },
-                body: _articles.length == 0
-                    ? Padding(
-                        padding: const EdgeInsets.only(top: 30),
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: Center(
-                              child: _buildCardExample(),
-                            )))
-                    : ListView.separated(
-                        separatorBuilder: (conext, index) => Divider(
-                          color: Colors.grey[300],
+                body: SafeArea(
+                  child: Column(
+                    children: <Widget>[
+                      Divider(
+                        height: 1,
+                        endIndent: 20,
+                        indent: 20,
+                        color: Colors.grey,
+                      ),
+                      Container(
+                        height: MediaQuery.of(context).size.height / 4,
+                        child: _buildCard(),
+                      ),
+                      Container(
+                        height: 50,
+                        child: TabBar(
+                          indicatorColor: Color(0XFF3D84A8),
+                          unselectedLabelStyle: TextStyle(
+                            fontWeight: FontWeight.normal,
+                          ),
+                          labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          isScrollable: true,
+                          tabs: <Widget>[
+                            Text(
+                              'Home',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontFamily: 'quickSandLight',
+                                color: Color(0XFF48466D),
+                              ),
+                            ),
+                            Text(
+                              'Health',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontFamily: 'quickSandLight',
+                                color: Color(0XFF48466D),
+                              ),
+                            ),
+                            Text(
+                              'Science',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontFamily: 'quickSandLight',
+                                color: Color(0XFF48466D),
+                              ),
+                            ),
+                            Text(
+                              'Arts',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontFamily: 'quickSandLight',
+                                color: Color(0XFF48466D),
+                              ),
+                            ),
+                            Text(
+                              'Books',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontFamily: 'quickSandLight',
+                                color: Color(0XFF48466D),
+                              ),
+                            ),
+                          ],
+                          controller: _tabController,
                         ),
-                        padding: EdgeInsets.only(bottom: 3, top: 10),
-                        itemCount: _articles.length,
-                        itemBuilder: (context, i) {
-                          return Padding(
-                              padding: EdgeInsets.only(bottom: 15),
-                              child: ListTile(
-                                isThreeLine: true,
-                                leading: Container(
-                                  height: 45,
-                                  width: 45,
-                                  child: Image.asset(
-                                    'assets/man.png',
-                                    fit: BoxFit.fill,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(50),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.grey,
-                                          blurRadius: 8,
-                                          spreadRadius: 0.4,
-                                          offset: Offset(6.0, 6.0)),
-                                    ],
-                                  ),
-                                ),
-                                subtitle: Text(
-                                  _articles[i].publishedDate,
-                                  style: TextStyle(
-                                    fontFamily: 'quickSandLight',
-                                    fontSize: 13,
-                                  ),
-                                ),
-                                trailing: Image.network(_articles[i].imageUrl),
-                                title: Text(_articles[i].title),
-                              ));
-                        },
-                      )),
+                      ),
+                      Expanded(
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: <Widget>[
+                            ListView.separated(
+                              separatorBuilder: (conext, index) => Divider(
+                                color: Colors.grey[300],
+                              ),
+                              padding: EdgeInsets.only(bottom: 3, top: 10),
+                              itemCount: _articles.length,
+                              itemBuilder: (context, i) {
+                                return Padding(
+                                    padding: EdgeInsets.only(bottom: 15),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        _launchUrl(_articles[i].url);
+                                      },
+                                      child: ListTile(
+                                        isThreeLine: true,
+                                        leading: Container(
+                                          height: 45,
+                                          width: 45,
+                                          child: Image.asset(
+                                            'assets/nytimesLogo.png',
+                                            //fit: BoxFit.cover,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey,
+                                                  blurRadius: 8,
+                                                  spreadRadius: 0.4,
+                                                  offset: Offset(1.0, 1.0)),
+                                            ],
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          _articles[i].publishedDate,
+                                          style: TextStyle(
+                                            fontFamily: 'quickSandLight',
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        trailing: Image.network(
+                                            _articles[i].imageUrl),
+                                        title: Text(_articles[i].title),
+                                      ),
+                                    ));
+                              },
+                            ),
+                            ListView.separated(
+                              separatorBuilder: (conext, index) => Divider(
+                                color: Colors.grey[300],
+                              ),
+                              padding: EdgeInsets.only(bottom: 3, top: 10),
+                              itemCount: _articlesH.length,
+                              itemBuilder: (context, j) {
+                                return Padding(
+                                    padding: EdgeInsets.only(bottom: 15),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        _launchUrl(_articlesS[j].url);
+                                      },
+                                      child: ListTile(
+                                        isThreeLine: true,
+                                        leading: Container(
+                                          height: 45,
+                                          width: 45,
+                                          child: Image.asset(
+                                            'assets/nytimesLogo.png',
+                                            //fit: BoxFit.cover,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey,
+                                                  blurRadius: 8,
+                                                  spreadRadius: 0.4,
+                                                  offset: Offset(1.0, 1.0)),
+                                            ],
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          _articlesH[j].publishedDate,
+                                          style: TextStyle(
+                                            fontFamily: 'quickSandLight',
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        trailing: Image.network(
+                                            _articlesH[j].imageUrl),
+                                        title: Text(_articlesH[j].title),
+                                      ),
+                                    ));
+                              },
+                            ),
+                            ListView.separated(
+                              separatorBuilder: (conext, index) => Divider(
+                                color: Colors.grey[300],
+                              ),
+                              padding: EdgeInsets.only(bottom: 3, top: 10),
+                              itemCount: _articlesS.length,
+                              itemBuilder: (context, k) {
+                                return Padding(
+                                    padding: EdgeInsets.only(bottom: 15),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        _launchUrl(_articlesS[k].url);
+                                      },
+                                      child: ListTile(
+                                        isThreeLine: true,
+                                        leading: Container(
+                                          height: 45,
+                                          width: 45,
+                                          child: Image.asset(
+                                            'assets/nytimesLogo.png',
+                                            //fit: BoxFit.cover,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey,
+                                                  blurRadius: 8,
+                                                  spreadRadius: 0.4,
+                                                  offset: Offset(1.0, 1.0)),
+                                            ],
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          _articlesS[k].publishedDate,
+                                          style: TextStyle(
+                                            fontFamily: 'quickSandLight',
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        trailing: Image.network(
+                                            _articlesS[k].imageUrl),
+                                        title: Text(_articlesS[k].title),
+                                      ),
+                                    ));
+                              },
+                            ),
+                            ListView.separated(
+                              separatorBuilder: (conext, index) => Divider(
+                                color: Colors.grey[300],
+                              ),
+                              padding: EdgeInsets.only(bottom: 3, top: 10),
+                              itemCount: _articlesA.length,
+                              itemBuilder: (context, m) {
+                                return Padding(
+                                    padding: EdgeInsets.only(bottom: 15),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        _launchUrl(_articlesA[m].url);
+                                      },
+                                      child: ListTile(
+                                        isThreeLine: true,
+                                        leading: Container(
+                                          height: 45,
+                                          width: 45,
+                                          child: Image.asset(
+                                            'assets/nytimesLogo.png',
+                                            //fit: BoxFit.cover,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey,
+                                                  blurRadius: 8,
+                                                  spreadRadius: 0.4,
+                                                  offset: Offset(1.0, 1.0)),
+                                            ],
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          _articlesA[m].publishedDate,
+                                          style: TextStyle(
+                                            fontFamily: 'quickSandLight',
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        trailing: Image.network(
+                                            _articlesA[m].imageUrl),
+                                        title: Text(_articlesA[m].title),
+                                      ),
+                                    ));
+                              },
+                            ),
+                            ListView.separated(
+                              separatorBuilder: (conext, index) => Divider(
+                                color: Colors.grey[300],
+                              ),
+                              padding: EdgeInsets.only(bottom: 3, top: 10),
+                              itemCount: _articlesB.length,
+                              itemBuilder: (context, n) {
+                                return Padding(
+                                    padding: EdgeInsets.only(bottom: 15),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        _launchUrl(_articlesB[n].url);
+                                      },
+                                      child: ListTile(
+                                        isThreeLine: true,
+                                        leading: Container(
+                                          height: 45,
+                                          width: 45,
+                                          child: Image.asset(
+                                            'assets/nytimesLogo.png',
+                                            //fit: BoxFit.cover,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey,
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey,
+                                                  blurRadius: 8,
+                                                  spreadRadius: 0.4,
+                                                  offset: Offset(1.0, 1.0)),
+                                            ],
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          _articlesB[n].publishedDate,
+                                          style: TextStyle(
+                                            fontFamily: 'quickSandLight',
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        trailing: Image.network(
+                                            _articlesB[n].imageUrl),
+                                        title: Text(_articlesB[n].title),
+                                      ),
+                                    ));
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )),
           );
   }
 }

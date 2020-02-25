@@ -31,7 +31,7 @@ class Button extends StatelessWidget {
               }
             },
             elevation: 0,
-            backgroundColor: Color(0XFFFFC15E),
+            backgroundColor: Color(0XFF48466D),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

@@ -28,6 +28,7 @@ dependencies:
   connectivity: ^0.4.8+1
   weather: ^0.9.5
   location: ^2.3.3
+  url_launcher: ^5.4.2
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +52,7 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
    - assets/1.png
-   - assets/man.png
+   - assets/nytimesLogo.png
    - assets/2.png
    - assets/logo.png
    - assets/lost.png

@@ -15,10 +15,14 @@ class Lost extends StatefulWidget {
 class _LostState extends State<Lost> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  _showSnackBar(){
-    final snacky = SnackBar(content: Text('Not yet connected  :(', textAlign: TextAlign.center,));
+  _showSnackBar() {
+    final snacky = SnackBar(
+        content: Text(
+      'Not yet connected  :(',
+      textAlign: TextAlign.center,
+    ));
     _scaffoldKey.currentState.showSnackBar(snacky);
-  } 
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,17 +52,13 @@ class _LostState extends State<Lost> {
                       }
                     } on SocketException catch (_) {
                       _showSnackBar();
-                      /*
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Lost()));
-                      */
                     }
                   },
-                  color: Color(0XFFf9a826),
+                  color: Color(0XFF3D84A8),
                   child: Text(
                     'Try again',
                     style: TextStyle(
-                      color: Colors.grey[50],
+                      color: Colors.white,
                       fontFamily: "robotoReg",
                       fontSize: 17,
                     ),
@@ -85,7 +85,7 @@ class _LostState extends State<Lost> {
                   Text(
                     "OOPS !",
                     style: TextStyle(
-                      color: Color(0XFFf9a826),
+                      color: Color(0XFF3D84A8),
                       fontFamily: "playfairBlack",
                       fontSize: 35,
                     ),
