@@ -9,6 +9,8 @@ import 'package:weather/weather.dart';
 import '../services/api_trend.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'search.dart';
+
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
 
@@ -391,7 +393,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         floating: true,
                         actions: <Widget>[
                           IconButton(
-                              icon: Icon(Icons.search), onPressed: () {}),
+                              icon: Icon(Icons.search),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Search()));
+                              }),
                         ],
                         pinned: false,
                         elevation: 10,
