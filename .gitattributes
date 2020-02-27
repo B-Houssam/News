@@ -1,2 +1,4 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+* .dart linguist-detectable=true
+* .java linguist-detectable=false
