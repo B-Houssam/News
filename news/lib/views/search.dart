@@ -16,9 +16,6 @@ class _SearchState extends State<Search> {
               return <Widget>[
                 SliverAppBar(
                     floating: true,
-                    actions: <Widget>[
-                      IconButton(icon: Icon(Icons.search), onPressed: () {}),
-                    ],
                     pinned: true,
                     elevation: 10,
                     centerTitle: false,
@@ -40,7 +37,8 @@ class _SearchState extends State<Search> {
                         Container(
                           height: 50,
                           width: MediaQuery.of(context).size.width * .7,
-                          child: TextFormField(),
+                          child: Visibility(
+                              visible: false, child: TextFormField()),
                         ),
                       ],
                     ),

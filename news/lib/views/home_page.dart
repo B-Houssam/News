@@ -19,7 +19,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with TickerProviderStateMixin {
-  //Color colIcon = Article().col;
   List<Article> _articles = [];
   List<Article> _articlesH = [];
   List<Article> _articlesS = [];
