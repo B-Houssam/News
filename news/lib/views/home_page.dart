@@ -43,7 +43,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   _fetchWether() async {
     try {
       WeatherStation _weatherSt =
-          new WeatherStation('97c67c4d203208e953239bf12da03413');
+          new WeatherStation('-->>>YOUR API KEY FROM OPENWEATHERMAP');
       Weather weather = await _weatherSt.currentWeather();
       //debug
       //print('---->>>>>${weather.temperature.celsius}');
