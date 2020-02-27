@@ -7,9 +7,6 @@ import '../widgets/button.dart';
 import 'home_page.dart';
 import 'lost.dart';
 import 'pages.dart';
-/*
-import '../Pages/pages.dart';
-*/
 
 class OnBoard extends StatefulWidget {
   @override
@@ -112,7 +109,6 @@ class _OnBoardState extends State<OnBoard> {
                       child: PageView(
                         onPageChanged: (int page) {
                           getP(page);
-                          //print(page);
                         },
                         children: <Widget>[
                           First(),

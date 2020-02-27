@@ -12,10 +12,8 @@ class ApiServiceT {
           'https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=$_apiKey');
       Map<String, dynamic> dat = json.decode(response.body);
       List<ArticleT> articlesT = [];
-      //print(dat.length);
 
       for (var i = 0; i < 5; i++) {
-        //print('hi');
         ArticleT a = new ArticleT(
           title: dat['results'][i]['title'],
           imageUrl: dat['results'][i]['media'].length == 0
@@ -24,11 +22,7 @@ class ApiServiceT {
           url: dat['results'][i]['url'],
         );
         articlesT.add(a);
-        //print(a.title);
       }
-
-      //print(dat['results'][0]['media'][0]['media-metadata'][2]['url']);
-      //print(articlesT.length);
       return articlesT;
     } catch (err) {
       throw err.toString();

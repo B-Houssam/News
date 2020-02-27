@@ -45,8 +45,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       WeatherStation _weatherSt =
           new WeatherStation('-->>>YOUR API KEY FROM OPENWEATHERMAP');
       Weather weather = await _weatherSt.currentWeather();
-      //debug
-      //print('---->>>>>${weather.temperature.celsius}');
       setState(() {
         _weth = weather;
         isLoding = false;
@@ -131,7 +129,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                     fontSize: 15,
                   ),
                 ),
-                //Padding(padding: EdgeInsets.only(bottom: 10)),
               ],
             ),
             Expanded(
@@ -218,7 +215,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                           alignment: Alignment.centerLeft,
                           child: Container(
                             width: MediaQuery.of(context).size.width / 2,
-                            //height: MediaQuery.of(context).size.height / 20,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(20),

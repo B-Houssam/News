@@ -11,7 +11,6 @@ class ApiService {
       var response = await http.get(
           'https://api.nytimes.com/svc/topstories/v2/$section.json?api-key=$_apiKey');
       Map<String, dynamic> data = json.decode(response.body);
-      //var n = data.length;
       List<Article> articles = [];
       data['results'].forEach(
         (articleMap) => articles.add(Article.fromMap(articleMap)),

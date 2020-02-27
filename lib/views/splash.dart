@@ -27,11 +27,8 @@ class _SplashState extends State<Splash> {
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        //print('connected');
         Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => OnBoard())); //replace with onBoard
+            context, MaterialPageRoute(builder: (context) => OnBoard()));
       }
     } on SocketException catch (_) {
       Navigator.pushReplacement(
