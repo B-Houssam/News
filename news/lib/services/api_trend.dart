@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../models/trend.dart';
 
 class ApiServiceT {
-  static const String _apiKey = 'j5W2orz2txPbg63pMTJTrIGXioF9Ywte';
+  static const String _apiKey = '->> YOUR API KEY from NYTimes';
 
   Future<List<ArticleT>> fetchTrends() async {
     try {
