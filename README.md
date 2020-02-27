@@ -34,6 +34,8 @@ and authorize for fetching your location.
 * [NYTimes API](https://developer.nytimes.com/) - Used to generate articles
 * [OpenWeatherMap API](https://developer.accuweather.com/) - Used to generate the weather forcast
 
+** Free illustrations from 'undraw.co' **
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.

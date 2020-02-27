@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import '../models/article_model.dart';
 
 class ApiService {
-  static const String _apiKey = 'W4uAIpTYEY8KNx3Wb0mfmtaO7HHJNBBG';
+  static const String _apiKey = '->>>>YOUR API KEY FROM NYTIMES';
 
   Future<List<Article>> fetchArticlesBySection(String section) async {
     try {
