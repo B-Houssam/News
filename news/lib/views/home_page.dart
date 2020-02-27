@@ -59,7 +59,11 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     List<ArticleT> articlesT = await ApiServiceT().fetchTrends();
     setState(() {
       _articlesT = articlesT;
-      //print('----------------->>');
+      if (_articlesT.length != 0) {
+        print('Trends connected');
+      } else {
+        print('trends failed');
+      }
     });
   }
 
@@ -78,165 +82,24 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       _articlesS = articlesS;
       _articlesA = articlesA;
       _articlesB = articlesB;
-
-      //n = _articles.length;
-      //print('-------->${_articles[49].title}');
-      //debug
-      //print('-------->${_articles.isEmpty}');
+      if (_articles.length != 0) {
+        print('Home connected');
+      }
+      if (_articlesH.length != 0) {
+        print('Health connected');
+      }
+      if (_articlesS.length != 0) {
+        print('science connected');
+      }
+      if (_articlesA.length != 0) {
+        print('arts connected');
+      }
+      if (_articlesB.length != 0) {
+        print('books connected');
+      }
     });
   }
 
-/*
-  _buildContaier(var index) {
-    return GestureDetector(
-      onDoubleTap: () {
-        setCol(index);
-      },
-      child: Container(
-          height: MediaQuery.of(context).size.height / 2,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(20),
-              bottomLeft: Radius.circular(20),
-            ),
-          ),
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        height: 43,
-                        width: 43,
-                        child: Image.asset(
-                          'assets/logo.png',
-                          fit: BoxFit.fill,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Color(0XFFFFC15E),
-                          borderRadius: BorderRadius.circular(50),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.grey,
-                                blurRadius: 8,
-                                spreadRadius: 0.4,
-                                offset: Offset(6.0, 6.0)),
-                          ],
-                        ),
-                      ),
-                      Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            constraints: BoxConstraints(
-                              maxWidth: MediaQuery.of(context).size.width - 100,
-                            ),
-                            child: Text(
-                              '${_articles[index].title}',
-                              maxLines: 2,
-                              overflow: TextOverflow.fade,
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 15,
-                                fontFamily: 'robotoReg',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                height: MediaQuery.of(context).size.height / 11,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(),
-              ),
-              Expanded(
-                child: Stack(
-                  fit: StackFit.passthrough,
-                  children: <Widget>[
-                    Container(
-                      child: Image.network(_articles[index].imageUrl,
-                          fit: BoxFit.fill),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 7,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
-                          colors: [Colors.black, Colors.transparent],
-                        )),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 10, bottom: 10),
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Text(
-                          "${_articles[index].summary}".substring(0, 70) +
-                              "...",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "robotoBlack",
-                            //fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: Icon(
-                        _articles[index].shape,
-                        size: 35,
-                        color: _articles[index].col,
-                      ),
-                    ),
-                  ],
-                ),
-                height: MediaQuery.of(context).size.height / 15,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(),
-              ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15, bottom: 13),
-                  child: Text(
-                    'Published on: ' + '${_articles[index].publishedDate}',
-                    style: TextStyle(
-                      color: Colors.grey[500],
-                      fontSize: 11,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          )),
-    );
-  }
-*/
   _buildWeather() {
     return Material(
       child: Container(
@@ -305,42 +168,6 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       ),
     );
   }
-/*
-  _buildCardExample() {
-    return Material(
-      borderRadius: BorderRadius.circular(10),
-      elevation: 9,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-        width: 300,
-        child: Row(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(right: 16),
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(.6),
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.photo_size_select_actual,
-                  color: Colors.white,
-                  size: 38,
-                ),
-              ),
-            ),
-            Expanded(
-              child: PlaceholderLines(
-                count: 3,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-  */
 
   _launchUrl(String url) async {
     if (await canLaunch(url)) {
@@ -432,7 +259,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 "Today's trends",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 15,
+                  fontSize: 16,
                   fontFamily: 'robotoMed',
                 ),
               ),
@@ -459,7 +286,101 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
             ),
           )
         : Scaffold(
-            drawer: Drawer(),
+            drawer: ClipRRect(
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
+              child: Drawer(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        Stack(
+                          children: <Widget>[
+                            Opacity(
+                              opacity: .7,
+                              child: Image.network(
+                                'https://images.unsplash.com/photo-1504711434969-e33886168f5c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80',
+                                fit: BoxFit.scaleDown,
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 20,
+                              left: 10,
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: Image.asset(
+                                  'assets/nytimesLogo.png',
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Divider(
+                          color: Colors.grey,
+                          indent: 20,
+                          endIndent: 20,
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        launch('https://www.github.com/B-Houssam');
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 40),
+                        child: Column(
+                          children: <Widget>[
+                            Divider(
+                              color: Colors.grey,
+                              indent: 20,
+                              endIndent: 20,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Image.asset(
+                                    'assets/man.png',
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                                Text(
+                                  'Click here and\nvisit me on GitHub',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontFamily: 'robotoMed',
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.link,
+                                  color: Colors.grey,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             backgroundColor: Colors.blueGrey[50],
             body: NestedScrollView(
                 headerSliverBuilder:
@@ -469,7 +390,8 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                         backgroundColor: Color(0XFF48466D),
                         floating: true,
                         actions: <Widget>[
-                          //
+                          IconButton(
+                              icon: Icon(Icons.search), onPressed: () {}),
                         ],
                         pinned: false,
                         elevation: 10,
@@ -501,15 +423,13 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
                 body: SafeArea(
                   child: Column(
                     children: <Widget>[
-                      Divider(
-                        height: 1,
-                        endIndent: 20,
-                        indent: 20,
-                        color: Colors.grey,
-                      ),
                       Container(
                         height: MediaQuery.of(context).size.height / 4,
                         child: _buildCard(),
+                      ),
+                      Divider(
+                        height: 1,
+                        color: Colors.grey,
                       ),
                       Container(
                         height: 50,
